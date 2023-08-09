@@ -1663,7 +1663,7 @@ input, select, textarea {
 		.button-link {
 			display: inline-block;
 			padding: 10px 20px;
-			background-color: #007bff;
+			background-color: grey;
 			color: white;
 			text-decoration: none;
 			border-radius: 5px;
@@ -1672,10 +1672,10 @@ input, select, textarea {
 		  }
 
 		  .button-link:hover {
-			background-color: #0056b3;
+			background-color: darkslategray;
 			color: #f0f0f0;
 		  }
 		
 		  .button-link:active {
-			background-color: #003a80;
+			background-color: black;
 		  }		  
