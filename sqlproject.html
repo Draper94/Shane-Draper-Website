@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Shane Draper</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<!--<div class="logo">
+							<span class="icon fa-gem"></span>
+						</div>-->
+						<div class="content">
+							<div class="inner">
+								<h1>SQL Sample Project</h1>
+								<a href="/index.html" class="button-link">Return Home</a>
+                                <a href="/dev.html" class="button-link">Return Dev</a>
+                                    <p>Click through the navigation bar below to watch me a database, run reports while assuring securitly for users</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#design">DB Design</a></li>
+								<li><a href="#manipulation">js</a></li>
+								<li><a href="#compqueries">sql</a></li>
+								<li><a href="#php">php</a></li>
+                                <li><a href="#html">html/css</a></li>
+								<li><a href="#js">js</a></li>
+								<li><a href="#sql">sql</a></li>
+								<li><a href="#php">php</a></li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- DB Design -->
+						<article id="design">
+						<h2 class="major">Design and Creation</h2>
+						<p>We started by designing a robust database schema to store information about artists, albums, tracks, customers, orders, and reviews. </p>
+                        <pre>
+                            <code>
+-- Create tables
+CREATE TABLE Artists (
+    ArtistID INT PRIMARY KEY,
+    ArtistName VARCHAR(100) NOT NULL,
+    Genre VARCHAR(50)
+);
+
+CREATE TABLE Albums (
+    AlbumID INT PRIMARY KEY,
+    AlbumTitle VARCHAR(100) NOT NULL,
+    ReleaseYear INT,
+    ArtistID INT,
+    CONSTRAINT fk_artist FOREIGN KEY (ArtistID) REFERENCES Artists(ArtistID)
+);
+
+CREATE TABLE Tracks (
+    TrackID INT PRIMARY KEY,
+    TrackTitle VARCHAR(100) NOT NULL,
+    Duration TIME,
+    AlbumID INT,
+    TrackNumber INT,
+    Lyrics TEXT,
+    CONSTRAINT fk_album FOREIGN KEY (AlbumID) REFERENCES Albums(AlbumID)
+);
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE,
+    Birthdate DATE
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE DEFAULT CURRENT_DATE,
+    TotalAmount DECIMAL(10, 2),
+    CONSTRAINT fk_customer FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY,
+    OrderID INT,
+    TrackID INT,
+    Quantity INT,
+    UnitPrice DECIMAL(6, 2),
+    CONSTRAINT fk_order FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    CONSTRAINT fk_track FOREIGN KEY (TrackID) REFERENCES Tracks(TrackID)
+);
+
+CREATE TABLE Reviews (
+    ReviewID INT PRIMARY KEY,
+    TrackID INT,
+    CustomerID INT,
+    Rating INT CHECK (Rating >= 1 AND Rating <= 5),
+    ReviewText TEXT,
+    CONSTRAINT fk_review_track FOREIGN KEY (TrackID) REFERENCES Tracks(TrackID),
+    CONSTRAINT fk_review_customer FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+                            </code>
+                          </pre>
+                        <p><a href="#manipulation" class="button-link" id="next-button">Next</a></p>
+						</article>
+
+						<!-- Data Manipulation -->
+							<article id="manipulation">
+								<h2 class="major">Data Manipulation</h2>
+								<p>To demonstrate the intuitiveness and simplicity of the database I've created, I'll utilize SQL queries that span a broad spectrum of tasks. These queries will showcase your proficiency in efficiently managing complex operations, encompassing tasks such as record insertion, data retrieval, and information aggregation.</p>
+                                <pre>
+                                    <code>
+-- Insert a new artist
+INSERT INTO Artists (ArtistID, ArtistName, Genre)
+VALUES (1, 'The Exclusive', 'indie-pop');
+
+-- Insert a new customer
+INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Birthdate)
+VALUES (1, 'Shane', 'Draper', 'shane@example.com', '1990-05-15');
+
+-- Retrieve all tracks from a specific album
+SELECT TrackTitle, Duration
+FROM Tracks
+WHERE AlbumID = 1;
+
+-- Retrieve customers who placed orders
+SELECT FirstName, LastName
+FROM Customers
+WHERE CustomerID IN (SELECT DISTINCT CustomerID FROM Orders);
+
+-- Calculate the total order amount for a specific customer
+SELECT CustomerID, SUM(TotalAmount) AS TotalSpent
+FROM Orders
+WHERE CustomerID = 1
+GROUP BY CustomerID;
+
+-- Retrieve customer information along with the track and album they ordered
+SELECT c.FirstName, c.LastName, t.TrackTitle, a.AlbumTitle
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN OrderItems oi ON o.OrderID = oi.OrderID
+JOIN Tracks t ON oi.TrackID = t.TrackID
+JOIN Albums a ON t.AlbumID = a.AlbumID
+WHERE c.CustomerID = 1;                                        
+                                    </code>
+                                </pre>
+                                <p><a href="#design" class="button-link" id="back-button">Back</a> <a href="#compqueries" class="button-link" id="next-button">Next</a></p>
+							</article>
+
+						<!-- Complex Queries -->
+							<article id="compqueries">
+								<h2 class="major">Complex Queries</h2>
+								<p>Here I give some example SQL queries that manipulate the data. These queries will cover a range of tasks, including inserting records, retrieving information, and performing updates. </p>
+                                <pre>
+                                    <code>
+-- Retrieve Albums and Their Average Ratings
+SELECT a.AlbumTitle, AVG(r.Rating) AS AvgRating
+FROM Albums a
+LEFT JOIN Tracks t ON a.AlbumID = t.AlbumID
+LEFT JOIN Reviews r ON t.TrackID = r.TrackID
+GROUP BY a.AlbumID, a.AlbumTitle
+ORDER BY AvgRating DESC;
+
+-- Find Customers Who Have Purchased Albums from a Specific Genre
+SELECT DISTINCT c.FirstName, c.LastName
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN OrderItems oi ON o.OrderID = oi.OrderID
+JOIN Tracks t ON oi.TrackID = t.TrackID
+JOIN Albums a ON t.AlbumID = a.AlbumID
+JOIN Artists ar ON a.ArtistID = ar.ArtistID
+WHERE ar.Genre = 'Rock';
+
+-- Retrieving the Most Popular Tracks by Total Number of Orders
+SELECT t.TrackTitle, COUNT(oi.OrderID) AS NumOrders
+FROM Tracks t
+LEFT JOIN OrderItems oi ON t.TrackID = oi.TrackID
+GROUP BY t.TrackID, t.TrackTitle
+ORDER BY NumOrders DESC
+LIMIT 5;
+
+-- Retrieving Customers Who Haven't Made Any Orders
+SELECT c.FirstName, c.LastName
+FROM Customers c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.OrderID IS NULL;
+                                    </code>
+                                </pre>
+                                <p><a href="#manipulation" class="button-link" id="back-button">Back</a> <a href="#optimization" class="button-link" id="next-button">Next</a></p>
+							</article>
+                            
+                        <!-- Optimizations -->
+						<article id="optimization">
+							<h2 class="major">Performance Optimization</h2>
+							<p>Here I wrote optimization techniques to enhance the database's performance. Strategies like indexing, normalization, and query optimization ensure that the system operates smoothly even as data grows.</p>
+                            <pre>
+                                <code>
+-- Indexing the Albums table
+CREATE INDEX idx_album_artist ON Albums (ArtistID);
+CREATE INDEX idx_album_title ON Albums (AlbumTitle);
+
+-- Indexing the Tracks table
+CREATE INDEX idx_track_album ON Tracks (AlbumID);
+CREATE INDEX idx_track_title ON Tracks (TrackTitle);
+
+
+-- Original Artists Table
+CREATE TABLE Artists (
+    ArtistID INT PRIMARY KEY,
+    ArtistName VARCHAR(100) NOT NULL,
+    Genre VARCHAR(50)
+);
+
+-- Normalized Artists Table with a separate Genres table
+CREATE TABLE Genres (
+    GenreID INT PRIMARY KEY,
+    GenreName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Artists (
+    ArtistID INT PRIMARY KEY,
+    ArtistName VARCHAR(100) NOT NULL,
+    GenreID INT,
+    FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
+);
+ 
+
+-- Creating a partitioned Orders table
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    ...
+)
+PARTITION BY RANGE (YEAR(OrderDate)) (
+    PARTITION p_2010 VALUES LESS THAN (2011),
+    PARTITION p_2011 VALUES LESS THAN (2012),
+    PARTITION p_2012 VALUES LESS THAN (2013),
+    ...
+);
+                                </code>
+                            </pre>
+                            <p><a href="#compqueries" class="button-link" id="back-button">Back</a> <a href="#reporting" class="button-link" id="next-button">Next</a></p>
+						</article>
+
+       					<!-- Reporting -->
+						<article id="reporting">
+							<h2 class="major">Reporting Queries</h2>
+							<p>Here I wrote queries that generate meaningful reports from the database, utilizing various aggregation functions and grouping to provide valuable insights such as sales revenue by genre, average rating of an album, and top artists based on most tracks sold.</p>
+                            <pre>
+                                <code>
+-- Total Sales Revenue by Genre
+SELECT ar.Genre, SUM(oi.Quantity * oi.UnitPrice) AS TotalRevenue
+FROM Artists ar
+JOIN Albums a ON ar.ArtistID = a.ArtistID
+JOIN Tracks t ON a.AlbumID = t.AlbumID
+JOIN OrderItems oi ON t.TrackID = oi.TrackID
+GROUP BY ar.Genre
+ORDER BY TotalRevenue DESC;
+                                    
+-- Monthly Sales Trend
+SELECT ar.Genre, SUM(oi.Quantity * oi.UnitPrice) AS TotalRevenue
+FROM Artists ar
+JOIN Albums a ON ar.ArtistID = a.ArtistID
+JOIN Tracks t ON a.AlbumID = t.AlbumID
+JOIN OrderItems oi ON t.TrackID = oi.TrackID
+GROUP BY ar.Genre
+ORDER BY TotalRevenue DESC;
+
+-- Average Order Amount and Number of Orders per years
+SELECT YEAR(o.OrderDate) AS Year, AVG(o.TotalAmount) AS AvgOrderAmount, COUNT(o.OrderID) AS NumOrders
+FROM Orders o
+GROUP BY Year
+ORDER BY Year;
+                                </code>
+                            </pre>
+                            <p><a href="#optimization" class="button-link" id="back-button">Back</a> <a href="#subqueries" class="button-link" id="next-button">Next</a></p>
+						</article>
+
+                        <!-- Subqueries -->
+						<article id="subqueries">
+							<h2 class="major">Subqueries and Aggregation</h2>
+							<p>Here are examples of using subqueries and aggregation functions to perform more complex data analysis tasks using the database.</p>
+                            <pre>
+                                <code>
+-- Find the Customer with the Highest Total Amount Spent
+SELECT c.FirstName, c.LastName, MAX(TotalAmountSpent) AS MaxAmountSpent
+FROM (
+    SELECT c.CustomerID, SUM(o.TotalAmount) AS TotalAmountSpent
+    FROM Customers c
+    JOIN Orders o ON c.CustomerID = o.CustomerID
+    GROUP BY c.CustomerID
+) AS CustomerTotalAmount
+JOIN Customers c ON CustomerTotalAmount.CustomerID = c.CustomerID;
+
+-- Calculate the Customer Lifetime Value Based on Average Order Amount
+SELECT c.FirstName, c.LastName, AVG(o.TotalAmount) * COUNT(o.OrderID) AS CLV
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.FirstName, c.LastName;
+
+-- Find Artists with Albums in Different Genres
+SELECT ar.ArtistName, GROUP_CONCAT(DISTINCT a.Genre) AS DifferentGenres
+FROM Artists ar
+JOIN Albums a ON ar.ArtistID = a.ArtistID
+GROUP BY ar.ArtistName
+HAVING COUNT(DISTINCT a.Genre) > 1;
+
+                                </code>
+                            </pre>
+                            <p><a href="#reporting" class="button-link" id="back-button">Back</a> <a href="#storedproc" class="button-link" id="next-button">Next</a></p>
+						</article>
+
+              			<!-- Stored Proc -->
+						<article id="storedproc">
+							<h2 class="major">Stored Procedures</h2>
+							<p>Stored procedures and user-defined functions can enhance the functionality and maintainability of a database. Here's are some queries that may be called upon frequently so it would be nice to just have them built out as stored procedures.</p>
+                            <pre>
+                                <code>
+-- Creates a Stored Procedure to Calculate Total Revenue for an Artist
+DELIMITER //
+CREATE PROCEDURE CalculateArtistRevenue(IN artistID INT)
+BEGIN
+    DECLARE totalRevenue DECIMAL(10, 2);
+    
+    SELECT SUM(oi.Quantity * oi.UnitPrice) INTO totalRevenue
+    FROM OrderItems oi
+    JOIN Tracks t ON oi.TrackID = t.TrackID
+    JOIN Albums a ON t.AlbumID = a.AlbumID
+    WHERE a.ArtistID = artistID;
+    
+    SELECT totalRevenue;
+END //
+DELIMITER ;
+
+-- Usage would look like this:
+CALL CalculateArtistRevenue(1);
+
+
+--Create a Stored Procedure to Update Track Prices
+DELIMITER //
+CREATE PROCEDURE UpdateTrackPrices()
+BEGIN
+    UPDATE Tracks
+    SET UnitPrice = UnitPrice * 1.1; -- Increase prices by 10%
+END //
+DELIMITER ;
+
+-- Usage would look like this:
+CALL UpdateTrackPrices();
+
+
+-- Creates a Function to Get the Number of Reviews for a Customer
+DELIMITER //
+CREATE FUNCTION GetNumReviewsForCustomer(customerID INT) RETURNS INT
+BEGIN
+    DECLARE numReviews INT;
+    
+    SELECT COUNT(*) INTO numReviews
+    FROM Reviews
+    WHERE CustomerID = customerID;
+    
+    RETURN numReviews;
+END //
+DELIMITER ;
+
+-- Usage would look like this:
+SELECT FirstName, LastName, GetNumReviewsForCustomer(CustomerID) AS NumReviews
+FROM Customers;
+                                </code>
+                            </pre>
+                            <p><a href="#subqueries" class="button-link" id="back-button">Back</a> <a href="#security" class="button-link" id="next-button">Next</a></p>
+						</article>
+
+						<!-- Security -->
+						<article id="security">
+							<h2 class="major">Security</h2>
+							<p>Database security is crucial for maintaining the integrity and confidentiality of your data. Here I established user roles, granted specific permissions, and enforced access controls. With row-level access and strong password policies, the data remains secure.</p>
+                            <pre>
+                                <code>
+-- Create roles for different types of users
+CREATE ROLE admin;
+CREATE ROLE employee;
+CREATE ROLE customer;
+
+
+-- Grant permissions to roles
+GRANT SELECT, INSERT, UPDATE, DELETE ON Artists TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Albums TO admin;
+GRANT SELECT ON Tracks TO admin, employee, customer;
+GRANT SELECT ON Customers TO admin, employee, customer;
+GRANT SELECT ON Orders TO admin, employee, customer;
+GRANT SELECT ON OrderItems TO admin, employee, customer;
+
+
+-- Create users and assign roles
+CREATE USER 'admin_user' IDENTIFIED BY 'admin_password';
+GRANT admin TO 'admin_user';
+
+CREATE USER 'employee_user' IDENTIFIED BY 'employee_password';
+GRANT employee TO 'employee_user';
+
+CREATE USER 'customer_user' IDENTIFIED BY 'customer_password';
+GRANT customer TO 'customer_user';
+
+
+-- Enable row-level access control for customers
+CREATE POLICY customer_order_policy
+  ON Orders
+  USING (CustomerID = current_setting('app.current_customer_id')::INT);
+
+ALTER TABLE Orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE Orders FORCE ROW LEVEL SECURITY;
+
+
+-- Revoke permissions from roles
+REVOKE INSERT, UPDATE, DELETE ON Artists FROM admin;
+REVOKE SELECT ON Tracks FROM employee;
+
+
+-- Enforce strong password policies
+ALTER USER 'admin_user' PASSWORD EXPIRE;
+ALTER USER 'admin_user' VALID UNTIL '2023-12-31';
+                                </code>
+                            </pre>
+                            <p><a href="#storedproc" class="button-link" id="back-button">Back</a></p>
+						</article>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -28,7 +28,7 @@
 								<li><a href="#html">html/css</a></li>
 								<li><a href="#js">js</a></li>
 								<li><a href="#sql">sql</a></li>
-								<li><a href="#php">php</a></li>
+								<li><a href="#python">python</a></li>
 							</ul>
 						</nav>
 					</header>
@@ -40,7 +40,7 @@
 						<article id="html">
 						<h2 class="major">HTML/CSS</h2>
 						<p>The construction of <b>shanedraper.com</b> involved the utilization of HTML, CSS, and JavaScript to create an interface that prioritizes user experience. The site's design integrates responsive features to ensure smooth navigation across devices. The interactive elements, shaped by my proficiency in various programming languages, enable dynamic engagement for visitors. Regular updates are implemented to align with evolving web technologies, maintaining a contemporary online presence. The development process was marked by a commitment to functional design and efficient code, underscoring a pragmatic approach to website creation.</p>
-						<p><a href="#php" class="button-link" id="back-button">Back (PHP)</a> <a href="#js" class="button-link" id="next-button">Next (JS)</a></p>
+						<p><a href="#php" class="button-link" id="back-button">Back (Python)</a> <a href="#js" class="button-link" id="next-button">Next (JS)</a></p>
 						</article>
 
 						<!-- JavaScript -->
@@ -53,258 +53,191 @@
 						<!-- SQL -->
 							<article id="sql">
 								<h2 class="major">SQL</h2>
-								<p>SQL Project Coming Soon...</p>
-								<p><a href="#js" class="button-link" id="back-button">Back (JS)</a> <a href="#php" class="button-link" id="next-button">Next (PHP)</a></p>
+								<p>In this project I showcase my handling of data using SQL from inception to aggregation. Optimization techniques assure seamless scalability, while insightful reports, empowered by aggregation functions and subqueries, uncover actionable insights. Automated processes through stored procedures and functions streamline operations, and robust security protocols—featuring user roles, permissions, and meticulous data access control—safeguard your valuable information. This is a comprehensive view of Shane's analytical capabilities, delivering an efficient and secure database.</p>
+								<p><a href="/sqlproject.html" class="button-link">SQL Project / Sample Work)</a></p>
+								<p><a href="#js" class="button-link" id="back-button">Back (JS)</a> <a href="#php" class="button-link" id="next-button">Next (Python)</a></p>
 							</article>
 
-						<!-- PHP -->
-						<article id="php">
-							<h2 class="major">PHP</h2>
-							<p>Laravel Project Coming Soon...</p>
+						<!-- Python -->
+						<article id="python">
+							<h2 class="major">Python</h2>
+							<p>This Python script (see below) is a graphical user interface (GUI) application that facilitates the conversion of PDF files to JPG images. The code utilizes the customtkinter library for creating the user interface components. The user can select an input directory containing PDF files and an output directory where the converted JPG images will be saved.</p>
+							<p>The script employs the pdf2image library to convert each PDF file into a sequence of images. It uses the convert_from_path function to extract the images from the PDFs. If any errors occur during the conversion process, they are handled and the script continues processing the remaining PDFs.</p>
+							<p>The user has the option to specify whether the first and last pages of each PDF are spreads. If enabled, the script crops and resizes the images accordingly, creating a visually appealing result. The size of the first non-cover page is used as a reference for resizing subsequent images.</p>
+							<p>The GUI includes various components, such as labels, buttons, checkboxes, and progress bars, to interact with the user and provide feedback during the conversion process. The progress of both individual PDF conversions and the overall conversion process is displayed using progress bars.</p>
+							<p>Once the conversion is complete, a success message is displayed to the user.</p>
+							<p>Overall, this script provides a user-friendly way to batch convert PDF files into JPG images while offering options for adjusting the appearance of the output images.</p>
+							<p><a href="#sql" class="button-link" id="back-button">Back (SQL)</a> <a href="#html" class="button-link" id="next-button">Next (HTML)</a></p>
+							<p>Code for the PDF to JPG Converter:</p>
+							<pre>
+                                <code>
+import customtkinter as ctk
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import messagebox
+from tkinter import ttk
+from pdf2image import convert_from_path
+from pdf2image.exceptions import PDFPageCountError
+from PIL import Image, ImageDraw
+import os
+
+def crop_to_half(image, left_half=True):
+	width, height = image.size
+	if left_half:
+		cropped_image = image.crop((0, 0, width // 2, height))
+	else:
+		cropped_image = image.crop((width // 2, 0, width, height))
+	return cropped_image
+
+def resize_image(image, desired_size):
+	"""Resize an image to the desired size without preserving aspect ratio."""
+	return image.resize(desired_size, Image.LANCZOS)
+
+def convert_pdf_to_jpg(input_dir, output_dir, progress_var, max_progress_var, progressbar, progressbar_label, cover_spreads=True):
+	pdf_files = [file for file in os.listdir(input_dir) if file.lower().endswith('.pdf')]
+	max_progress_var.set(len(pdf_files))
+
+	size_of_first_page = None  # Variable to store the size of the first non-cover page
+
+	for pdf_index, pdf_file in enumerate(pdf_files):
+		pdf_name = os.path.splitext(pdf_file)[0]
+		jpg_dir = os.path.join(output_dir, pdf_name)
+		os.makedirs(jpg_dir, exist_ok=True)
+
+		pdf_path = os.path.join(input_dir, pdf_file)
+		try:
+			images = convert_from_path(pdf_path)
+		except PDFPageCountError as e:
+			print(f"Error occurred while converting PDF: {pdf_file}")
+			print("The PDF might be encrypted or contain scanned pages.")
+			continue
+		except Exception as e:
+			print(f"Error occurred while converting PDF: {pdf_file}")
+			print(f"Error details: {str(e)}")
+			continue
+
+		sub_progressbar = ttk.Progressbar(root, length=400, mode='determinate', maximum=len(images))
+		sub_progressbar.pack(pady=10)
+
+		for img_index, image in enumerate(images):
+			# First image (front cover)
+			if img_index == 0 and cover_spreads:
+				image = crop_to_half(image, left_half=False)
+			# Last image (back cover)
+			elif img_index == len(images) - 1 and cover_spreads:
+				image = crop_to_half(image, left_half=True)
+
+			if size_of_first_page is None and img_index > 0:
+				size_of_first_page = image.size  # Assign the size of the first non-cover page
+
+			# Resize the image to the size of the first non-cover page
+			if size_of_first_page is not None:
+				image = image.resize(size_of_first_page, Image.BICUBIC)
+
+			page_number = str(img_index + 1).zfill(3)
+			jpg_path = os.path.join(jpg_dir, f"{page_number}.jpg")
+			try:
+				image.save(jpg_path, "JPEG")
+			except Exception as e:
+				print(f"Error occurred while saving JPG: {jpg_path}")
+				print(f"Error details: {str(e)}")
+
+			sub_progressbar['value'] = img_index + 1
+			root.update()
+
+		sub_progressbar.pack_forget()
+		progressbar['value'] = pdf_index + 1
+
+		progress_percentage = (pdf_index + 1) * 100 // len(pdf_files)
+		progress_var.set(progress_percentage)
+		progressbar_label.configure(text=f"\nProcessing PDFs: {pdf_index + 1}/{len(pdf_files)} - {progress_percentage}%")
+		root.update()
+
+	print("Conversion completed successfully.")
+
+def select_input_directory():
+	dir_name = filedialog.askdirectory()
+	input_dir_var.set(dir_name)
+
+def select_output_directory():
+	dir_name = filedialog.askdirectory()
+	output_dir_var.set(dir_name)
+
+def convert():
+	global progressbar
+
+	input_dir = input_dir_var.get()
+	output_dir = output_dir_var.get()
+	cover_spreads = cover_spreads_var.get()
+	if input_dir and output_dir:
+		progress_label.configure(text="Conversion Progress")
+		progress_label.pack()
+		progressbar_label.configure(text="Processing PDFs...")
+		progressbar_label.pack()
+
+		progressbar = ttk.Progressbar(root, length=400, mode='determinate', maximum=100, variable=progress_var)
+		progressbar.pack(pady=5)
+
+		convert_pdf_to_jpg(input_dir, output_dir, progress_var, max_progress_var, progressbar, progressbar_label, cover_spreads)
+		messagebox.showinfo('Success', 'Conversion completed successfully.')
+
+		progressbar.pack_forget()
+		progressbar_label.pack_forget()
+		progress_label.pack_forget()
+	else:
+		messagebox.showwarning('Warning', 'Please select both directories.')
+
+
+root = ctk.CTk()
+root.geometry("700x500")
+root.title("PDF to JPG Converter")
+
+title_label = ctk.CTkLabel(root, text="PDF to JPG", font=ctk.CTkFont(size=30, weight="bold"))
+title_label.pack(pady=(30, 5))
+
+instruction_label = ctk.CTkLabel(root, text="Select a folder containing PDF files and a folder where you want the converted JPG’s to be saved.")
+instruction_label.pack(pady=(10, 20))
+
+input_dir_var = ctk.StringVar()
+output_dir_var = ctk.StringVar()
+progress_var = tk.IntVar()
+max_progress_var = tk.IntVar()
+
+input_frame = ctk.CTkFrame(root)
+input_frame.pack(pady=15)
+ctk.CTkLabel(input_frame, text="Input Directory (PDF):").pack(padx=10)
+ctk.CTkEntry(input_frame, textvariable=input_dir_var).pack(side=ctk.LEFT)
+pdf_button = ctk.CTkButton(input_frame, text='Browse', command=select_input_directory)
+pdf_button.pack(padx=10)
+
+output_frame = ctk.CTkFrame(root)
+output_frame.pack(pady=15)
+ctk.CTkLabel(output_frame, text="Output Directory (JPG):").pack(padx=10)
+ctk.CTkEntry(output_frame, textvariable=output_dir_var).pack(side=ctk.LEFT)
+jpg_button = ctk.CTkButton(output_frame, text='Browse', command=select_output_directory)
+jpg_button.pack(padx=10)
+
+cover_spreads_var = tk.BooleanVar()
+cover_spreads_var.set(False)
+cover_spreads_checkbox = ctk.CTkCheckBox(root, text="First and last pages are spreads", variable=cover_spreads_var)
+cover_spreads_checkbox.pack()
+
+button_frame = ctk.CTkFrame(root)
+button_frame.pack(pady=15)
+
+convert_button = ctk.CTkButton(button_frame, text='Convert', command=convert, fg_color="green", hover_color="dark green")
+convert_button.pack()
+
+progress_label = ctk.CTkLabel(root)
+progressbar_label = ctk.CTkLabel(root)
+progressbar = ttk.Progressbar(root, length=400, mode='determinate', maximum=100, variable=progress_var)
+
+root.mainloop()									
+								</code>
+                            </pre>
 							<p><a href="#sql" class="button-link" id="back-button">Back (SQL)</a> <a href="#html" class="button-link" id="next-button">Next (HTML)</a></p>
 						</article>
 
-						<!-- Elements -->
-							<article id="elements">
-								<h2 class="major">Elements</h2>
-
-								<section>
-									<h3 class="major">Text</h3>
-									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
-									<hr />
-									<h2>Heading Level 2</h2>
-									<h3>Heading Level 3</h3>
-									<h4>Heading Level 4</h4>
-									<h5>Heading Level 5</h5>
-									<h6>Heading Level 6</h6>
-									<hr />
-									<h4>Blockquote</h4>
-									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-									<h4>Preformatted</h4>
-									<pre><code>i = 0;
-
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
-
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
-								</section>
-
-								<section>
-									<h3 class="major">Lists</h3>
-
-									<h4>Unordered</h4>
-									<ul>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Sagittis adipiscing.</li>
-										<li>Felis enim feugiat.</li>
-									</ul>
-
-									<h4>Alternate</h4>
-									<ul class="alt">
-										<li>Dolor pulvinar etiam.</li>
-										<li>Sagittis adipiscing.</li>
-										<li>Felis enim feugiat.</li>
-									</ul>
-
-									<h4>Ordered</h4>
-									<ol>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Etiam vel felis viverra.</li>
-										<li>Felis enim feugiat.</li>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Etiam vel felis lorem.</li>
-										<li>Felis enim et feugiat.</li>
-									</ol>
-									<h4>Icons</h4>
-									<ul class="icons">
-										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-									</ul>
-
-									<h4>Actions</h4>
-									<ul class="actions">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-								</section>
-
-								<section>
-									<h3 class="major">Table</h3>
-									<h4>Default</h4>
-									<div class="table-wrapper">
-										<table>
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Item One</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Two</td>
-													<td>Vis ac commodo adipiscing arcu aliquet.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Three</td>
-													<td> Morbi faucibus arcu accumsan lorem.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Four</td>
-													<td>Vitae integer tempus condimentum.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Five</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="2"></td>
-													<td>100.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-
-									<h4>Alternate</h4>
-									<div class="table-wrapper">
-										<table class="alt">
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Item One</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Two</td>
-													<td>Vis ac commodo adipiscing arcu aliquet.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Three</td>
-													<td> Morbi faucibus arcu accumsan lorem.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Four</td>
-													<td>Vitae integer tempus condimentum.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Five</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="2"></td>
-													<td>100.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-								</section>
-
-								<section>
-									<h3 class="major">Buttons</h3>
-									<ul class="actions">
-										<li><a href="#" class="button primary">Primary</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-									<ul class="actions">
-										<li><a href="#" class="button">Default</a></li>
-										<li><a href="#" class="button small">Small</a></li>
-									</ul>
-									<ul class="actions">
-										<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
-										<li><a href="#" class="button icon solid fa-download">Icon</a></li>
-									</ul>
-									<ul class="actions">
-										<li><span class="button primary disabled">Disabled</span></li>
-										<li><span class="button disabled">Disabled</span></li>
-									</ul>
-								</section>
-
-								<section>
-									<h3 class="major">Form</h3>
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<label for="demo-name">Name</label>
-												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
-											</div>
-											<div class="field half">
-												<label for="demo-email">Email</label>
-												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
-											</div>
-											<div class="field">
-												<label for="demo-category">Category</label>
-												<select name="demo-category" id="demo-category">
-													<option value="">-</option>
-													<option value="1">Manufacturing</option>
-													<option value="1">Shipping</option>
-													<option value="1">Administration</option>
-													<option value="1">Human Resources</option>
-												</select>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-												<label for="demo-priority-low">Low</label>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-high" name="demo-priority">
-												<label for="demo-priority-high">High</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-copy" name="demo-copy">
-												<label for="demo-copy">Email me a copy</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-human" name="demo-human" checked>
-												<label for="demo-human">Not a robot</label>
-											</div>
-											<div class="field">
-												<label for="demo-message">Message</label>
-												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><input type="submit" value="Send Message" class="primary" /></li>
-											<li><input type="reset" value="Reset" /></li>
-										</ul>
-									</form>
-								</section>
-
-							</article>
 
 					</div>
 
