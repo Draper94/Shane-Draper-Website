@@ -247,8 +247,14 @@ input, select, textarea {
 
 .section-heading {
     text-align: center;
-    padding: 80px 45px;
+    padding: 80px 40px 20px 40px;
 }
+
+.sub-section-heading {
+    text-align: center;
+    padding: 20px 40px 20px 40px;
+}
+
 
 
 .section-heading .line-dec {
@@ -334,3 +340,24 @@ input, select, textarea {
     padding-bottom: 30px;
     margin-bottom: 30px;
 }
+
+
+.button-link {
+    display: inline-block;
+    padding: 10px 10px;
+    background-color: grey;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .button-link:hover {
+    background-color: darkslategray;
+    color: #f0f0f0;
+  }
+
+  .button-link:active {
+    background-color: black;
+  }		  
