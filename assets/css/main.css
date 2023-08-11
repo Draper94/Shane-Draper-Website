@@ -1672,3 +1672,14 @@ input, select, textarea {
 		  .button-link:active {
 			background-color: black;
 		  }		  
+
+		#back-button,
+		#next-button {
+			display: inline-block;
+			margin-right: 10px; /* Adjust this value to create spacing between buttons */
+		}
+
+		#next-button {
+			margin-right: 0; /* Remove margin from the "Next" button */
+			float: right; /* Float the "Next" button to the right */
+		}
