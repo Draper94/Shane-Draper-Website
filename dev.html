@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/game.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -40,22 +41,44 @@
 						<article id="html">
 						<h2 class="major">HTML/CSS</h2>
 						<p>The construction of <b>shanedraper.com</b> involved the utilization of HTML, CSS, and JavaScript to create an interface that prioritizes user experience. The site's design integrates responsive features to ensure smooth navigation across devices. The interactive elements, shaped by my proficiency in various programming languages, enable dynamic engagement for visitors. Regular updates are implemented to align with evolving web technologies, maintaining a contemporary online presence. The development process was marked by a commitment to functional design and efficient code, underscoring a pragmatic approach to website creation.</p>
-						<p><a href="#php" class="button-link" id="back-button">Back (Python)</a> <a href="#js" class="button-link" id="next-button">Next (JS)</a></p>
+						<p><a href="#python" class="button-link" id="back-button">Back (Python)</a> <a href="#js" class="button-link" id="next-button">Next (JS)</a></p>
 						</article>
 
 						<!-- JavaScript -->
-							<article id="js">
-								<h2 class="major">JavaScript</h2>
-								<p>JavaScript Project Coming Soon...</p>
-								<p><a href="#html" class="button-link" id="back-button">Back (HTML)</a> <a href="#sql" class="button-link" id="next-button">Next (SQL)</a></p>
-							</article>
+						<article id="js">
+							<h2 class="major"></h2>
+
+							<div id="start-game-panel">
+								<h1>JavaScript</h1>
+								<h2>Welcome to Cube Jump!</h2>
+								<p>Press 'Space Bar' to Jump</p>
+								<p></p><button id="start-game-button">Start Game</button></p>
+								<p><a href="#html" class="panel-button-link">Back (HTML)</a></p>
+								<p><a href="#sql" class="panel-button-link">Next (SQL)</a></p>
+							</div>
+
+							<div id="score">Score: 0</div>
+
+							<div id="game-container">
+								<div id="dino"></div>
+								<div id="obstacle"></div>
+							</div>
+
+							<div id="game-over-panel" style="display: none;">
+								<h1>Game Over!</h1>
+								<p><button id="replay-button">Replay</button></p>
+								<p><a href="#html" class="panel-button-link">Back (HTML)</a></p>
+								<p><a href="#sql" class="panel-button-link">Next (SQL)</a></p>
+							</div>
+
+						</article>
 
 						<!-- SQL -->
 							<article id="sql">
 								<h2 class="major">SQL</h2>
 								<p>In this project I showcase my handling of data using SQL from inception to aggregation. Optimization techniques assure seamless scalability, while insightful reports, empowered by aggregation functions and subqueries, uncover actionable insights. Automated processes through stored procedures and functions streamline operations, and robust security protocols—featuring user roles, permissions, and meticulous data access control—safeguard your valuable information. This is a comprehensive view of Shane's analytical capabilities, delivering an efficient and secure database.</p>
 								<p><a href="/sqlproject.html" class="button-link">SQL Project / Sample Work)</a></p>
-								<p><a href="#js" class="button-link" id="back-button">Back (JS)</a> <a href="#php" class="button-link" id="next-button">Next (Python)</a></p>
+								<p><a href="#js" class="button-link" id="back-button">Back (JS)</a> <a href="#python" class="button-link" id="next-button">Next (Python)</a></p>
 							</article>
 
 						<!-- Python -->
@@ -256,6 +279,7 @@ root.mainloop()
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/game.js"></script>
 
 	</body>
 </html>
