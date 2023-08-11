@@ -231,65 +231,36 @@ input, select, textarea {
 
 	}
 
-	sub {
-		font-size: 0.8rem;
-		position: relative;
-		top: 0.5rem;
-	}
 
-	sup {
-		font-size: 0.8rem;
-		position: relative;
-		top: -0.5rem;
-	}
+    /* Section */
 
-	blockquote {
-		border-left: solid 4px #ffffff;
-		font-style: italic;
-		margin: 0 0 2rem 0;
-		padding: 0.5rem 0 0.5rem 2rem;
-	}
+.section {
+    color: #fff;
+    width: 90%;
+    right: 10%;
+    left: 10%;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    border-bottom: 3px solid rgba(250, 250, 250, 0.25);
+}
 
-	code {
-		background: rgba(255, 255, 255, 0.075);
-		border-radius: 4px;
-		font-family: "Courier New", monospace;
-		font-size: 0.9rem;
-		margin: 0 0.25rem;
-		padding: 0.25rem 0.65rem;
-	}
+.section-heading {
+    text-align: center;
+    padding: 80px 45px;
+}
 
-	pre {
-		-webkit-overflow-scrolling: touch;
-		font-family: "Courier New", monospace;
-		font-size: 0.9rem;
-		margin: 0 0 2rem 0;
-	}
 
-		pre code {
-			display: block;
-			line-height: 1.75;
-			padding: 1rem 1.5rem;
-			overflow-x: auto;
-		}
+.section-heading .line-dec {
+    width: 60px;
+    height: 3px;
+    background-color: #fff;
+    margin: 10px auto;
+}
 
-	hr {
-		border: 0;
-		border-bottom: solid 1px #ffffff;
-		margin: 2.75rem 0;
-	}
 
-	.align-left {
-		text-align: left;
-	}
 
-	.align-center {
-		text-align: center;
-	}
 
-	.align-right {
-		text-align: right;
-	}
 
 /* Sorter */
 
@@ -298,17 +269,68 @@ input, select, textarea {
     flex-wrap: wrap;
     justify-content: flex-start; /* Adjust as needed */
     align-items: flex-start; /* Adjust as needed */
-  }
+}
 
-  .isotope-item {
-      /* Set initial opacity and transform properties */
-      opacity: 1;
-      transform: scale(1);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-  }
+.isotope-item {
+    /* Set initial opacity and transform properties */
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
-  .isotope-item.hidden {
-      /* Change opacity and scale for hidden items */
-      opacity: 0;
-      transform: scale(0.8);
-    }
+.isotope-item.hidden {
+    /* Change opacity and scale for hidden items */
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+
+.isotope-wrapper {
+    position: relative;
+    width: 100%;
+    margin: auto;
+}
+
+.isotope-toolbar input[type="radio"] {
+    display: none;
+}
+
+.isotope-toolbar span {
+    text-transform: capitalize;
+    display: inline-block;
+    margin-right: 15px;
+    padding-bottom: 3px;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+    transform: ease-in-out 0.5s;
+    cursor: pointer;
+}
+
+.isotope-toolbar input[type="radio"]:checked + span {
+    color: #618685;
+    border-bottom: 2px solid #618685;
+}
+
+.isotope-toolbar {
+    text-align: center;
+    margin: 10px;
+}
+
+.isotope-toolbar p {
+    border-top: 1px solid #fff;
+    padding-top: 15px;
+}
+
+.isotope-toolbar a {
+    color: #fff;
+}
+
+.isotope-item {
+    position: relative;
+    width: 48%;
+    margin: 1%;
+    border-bottom: 2px solid rgba(250,250,250,0.1);
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
