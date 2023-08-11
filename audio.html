@@ -5,60 +5,11 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-  
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css" />
     <link rel="stylesheet" href="assets/css/templatemo-style.css" />
-    <link rel="stylesheet" href="assets/css/owl.css" />
-    <link rel="stylesheet" href="assets/css/lightbox.css" />
   </head>
-
-  <style>
-    .isotope-box {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start; /* Adjust as needed */
-      align-items: flex-start; /* Adjust as needed */
-    }
-
-    .isotope-item {
-        /* Set initial opacity and transform properties */
-        opacity: 1;
-        transform: scale(1);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    
-    .isotope-item.hidden {
-        /* Change opacity and scale for hidden items */
-        opacity: 0;
-        transform: scale(0.8);
-    }
-</style>
-
-<header id="header">
-  <!--<div class="logo">
-    <span class="icon fa-gem"></span>
-  </div>-->
-  <div class="content">
-    <div class="inner">
-      <h1>Shane Draper</h1>
-      <p>Developer - Musician - Creator</p>
-    </div>
-  </div>
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#dev">Dev</a></li>
-      <li><a href="#music">Music</a></li>
-      <li><a href="#games">Games</a></li>
-    </ul>
-  </nav>
-</header>
 
   <body>
             <section class="section my-work" data-section="section3">
@@ -70,14 +21,6 @@
                     >Here are samples of my work in video games. It includes original compositions, original sound designs and ambient tracks.</span
                   >
                 </div>
-
-                <nav>
-                  <ul>
-                    <li>
-                      <a href="/index.html" class="button-link">Back</a>
-                    </li>
-                  </ul>
-                </nav>
 
                 <div class="row">
                   <div class="isotope-wrapper">
@@ -188,37 +131,8 @@
             </section>
           </div>
 
-          <script>
-            // Get references to the radio inputs and isotope items
-            const radioButtons = document.querySelectorAll('input[name="isotope-filter"]');
-            const isotopeBox = document.querySelector('.isotope-box'); // Parent container
-            const isotopeItems = document.querySelectorAll('.isotope-item');
-          
-            // Add event listeners to the radio inputs
-            radioButtons.forEach(radio => {
-              radio.addEventListener('change', event => {
-                const selectedType = event.target.getAttribute('data-type');
-                
-                // Apply hidden class to items that don't match the selected type
-                isotopeItems.forEach(item => {
-                  if (selectedType !== '*' && item.getAttribute('data-type') !== selectedType) {
-                    item.classList.add('hidden');
-                  } else {
-                    item.classList.remove('hidden');
-                  }
-                });
-                
-                // Reorder the isotope items based on their visibility
-                isotopeItems.forEach(item => {
-                  if (item.classList.contains('hidden')) {
-                    isotopeBox.appendChild(item); // Move hidden items to the end
-                  } else {
-                    isotopeBox.prepend(item); // Move visible items to the beginning
-                  }
-                });
-              });
-            });
-          </script>
+		<!-- Scripts -->
+          <script src="assets/js/audiobrowser.js"></script>
           
           
   </body>
