@@ -1687,10 +1687,6 @@ input, select, textarea {
 		  .button-link:active::before {
 			background-color: rgba(255, 255, 255, 0.175);
 		  }
-		  
-
-
-
 
 		#back-button,
 		#next-button {
@@ -1702,3 +1698,13 @@ input, select, textarea {
 			margin-right: 0; /* Remove margin from the "Next" button */
 			float: right; /* Float the "Next" button to the right */
 		}
+
+		.sql-steps {
+			text-align: center;
+		  }
+		  
+		  .sql-steps > ul {
+			list-style: none;
+			padding: 0;
+		  }
+		  
