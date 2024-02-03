@@ -149,7 +149,7 @@ input, select, textarea {
 	}
 
 		a:hover {
-			border-bottom-color: transparent;
+			background-color: #292138;
 		}
 
 	strong, b {
@@ -1653,11 +1653,10 @@ input, select, textarea {
 			opacity: 0;
 		}
 
-		.button-link {
+		.button-link-two {
 			all: unset; /* Reset all inherited styles */
 			display: inline-block;
 			padding: 10px 20px;
-			background-color: transparent;
 			color: white;
 			text-decoration: none;
 			border-radius: 5px;
@@ -1666,6 +1665,25 @@ input, select, textarea {
 			position: relative;
 			overflow: hidden;
 			box-shadow: none; /* Remove box-shadow */
+		  }
+
+		.button-link {
+			all: unset; /* Reset all inherited styles */
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #599054;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+			border: 1px solid white; /* Adjust border thickness */
+			cursor: pointer;
+			position: relative;
+			overflow: hidden;
+			box-shadow: none; /* Remove box-shadow */
+		  }
+
+		  .button-link:hover {
+			background-color: #426b3e;
 		  }
 		  
 		  .button-link::before {
@@ -1692,7 +1710,15 @@ input, select, textarea {
 		#next-button {
 			display: inline-block;
 			margin-right: 10px; /* Adjust this value to create spacing between buttons */
+			background-color: #695490;
 		}
+
+		
+		#back-button:hover,
+		#next-button:hover{
+			background-color: #292138;
+		}
+
 
 		#next-button {
 			margin-right: 0; /* Remove margin from the "Next" button */
@@ -1707,4 +1733,9 @@ input, select, textarea {
 			list-style: none;
 			padding: 0;
 		  }
+
+		  .centered-paragraph {
+			text-align: center;
+		}
+
 		  
